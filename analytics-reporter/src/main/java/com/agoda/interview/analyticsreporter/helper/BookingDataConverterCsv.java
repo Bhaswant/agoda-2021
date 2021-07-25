@@ -23,7 +23,7 @@ import com.agoda.interview.analyticsreporter.model.BookingData;
 @Component
 public class BookingDataConverterCsv implements IBookingDataConverter {
 
-	Logger logger = LoggerFactory.getLogger(BookingDataConverterCsv.class);
+	private Logger logger = LoggerFactory.getLogger(BookingDataConverterCsv.class);
 
 	/**
 	 * Expecting first line as headers. As part of pro-active validation, Ignoring

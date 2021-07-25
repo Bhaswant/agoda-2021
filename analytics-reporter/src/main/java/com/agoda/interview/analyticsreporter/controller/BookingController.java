@@ -33,6 +33,6 @@ public class BookingController {
 		} catch (IOException e) {
 			return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return new ResponseEntity<>(AnalyticsReporterLogs.SUCCESS_MSG, HttpStatus.OK);
+		return new ResponseEntity<>(AnalyticsReporterLogs.SUCCESS_MSG, HttpStatus.CREATED);
 	}
 }

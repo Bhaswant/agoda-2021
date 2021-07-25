@@ -23,7 +23,7 @@ import com.agoda.interview.analyticsreporter.repository.BookingDataRepository;
 import com.agoda.interview.analyticsreporter.service.BookingService;
 
 /**
- * Implementation of Booking service
+ * Implementation of {@link BookingService}
  * 
  * @author i0b00j8
  *
@@ -54,7 +54,7 @@ public class BookingServiceImpl implements BookingService {
 			// Batch update TODO: Check for multi-threading
 			repository.saveAll(bulkInput.get());
 		}
-		logger.debug("Time taken to complete booking insert {}", (System.currentTimeMillis() - startTime));
+		logger.debug(AnalyticsReporterLogs.INSERTION_LOG, (System.currentTimeMillis() - startTime));
 	}
 	
 	@Override

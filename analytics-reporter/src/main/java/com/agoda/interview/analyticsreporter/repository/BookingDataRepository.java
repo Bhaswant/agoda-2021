@@ -1,5 +1,8 @@
 package com.agoda.interview.analyticsreporter.repository;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.data.repository.CrudRepository;
 
 import com.agoda.interview.analyticsreporter.model.BookingData;
@@ -10,5 +13,6 @@ import com.agoda.interview.analyticsreporter.model.BookingData;
  *
  */
 public interface BookingDataRepository extends CrudRepository<BookingData, String> {
-
+	
+	public Optional<List<BookingData>> findAllByHotelId(String hotelId);
 }
