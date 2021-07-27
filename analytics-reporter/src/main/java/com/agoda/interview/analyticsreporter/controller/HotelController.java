@@ -29,6 +29,6 @@ public class HotelController {
 	@GetMapping("/summary")
 	public ResponseEntity<HotelSummary> getSummary(@RequestParam String hotelId, @RequestParam(required = false) Double exchangeRate) {
 		HotelSummary summary = hotelService.getHotelSummary(hotelId, Optional.ofNullable(exchangeRate));
-		return new ResponseEntity<HotelSummary>(summary, HttpStatus.OK);
+		return new ResponseEntity<>(summary, HttpStatus.OK);
 	}
 }

@@ -26,4 +26,6 @@ public class AnalyticsReporterLogs {
 	public static final String INSERTION_LOG = "Time taken to complete booking insert {}";
 	
 	public static final String FETCH_LOG = "Time taken to fetch records {}";
+	
+	public static final String THREAD_EXECTUION_EXCEPTION = "Exception occured while waiting for threads. {0}";
 }

@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
@@ -18,16 +19,17 @@ import com.google.gson.JsonSyntaxException;
 @Component
 public class BookingDataConverterJson implements IBookingDataConverter {
 
-	private Logger logger = LoggerFactory.getLogger(BookingDataConverterJson.class);
+	@Autowired
+	private Gson gson;
 
-	private static final Gson GSON = new Gson();
+	private Logger logger = LoggerFactory.getLogger(BookingDataConverterJson.class);
 
 	@Override
 	public Optional<List<BookingData>> convert(final String input) throws InvalidDataException {
 		List<BookingData> bookingData = null;
 		try {
 			bookingData = new ArrayList<>();
-			JsonObject inputObj = GSON.fromJson(input, JsonObject.class);
+			JsonObject inputObj = gson.fromJson(input, JsonObject.class);
 			JsonArray inputArr = inputObj.get("bookings").getAsJsonArray();
 			for (int i = 0; i < inputArr.size(); i++) {
 				JsonObject bookingObj = inputArr.get(i).getAsJsonObject();

@@ -7,7 +7,11 @@ public class CustomerSummary {
 	
 	private final String customerId;
 	
-	private final String numberOfBookings;
+	private final int numberOfBookings;
 	
-	private final String totalPriceUsd;
+	private final double totalPriceUsd;
+	
+	public static CustomerSummary emptyObject(final String customerId) {
+		return new CustomerSummary(customerId, 0, 0);
+	}
 }
