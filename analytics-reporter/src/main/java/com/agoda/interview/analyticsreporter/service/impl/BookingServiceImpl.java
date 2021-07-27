@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
 import com.agoda.interview.analyticsreporter.exception.UnsupportedFormatException;
+import com.agoda.interview.analyticsreporter.helper.AnalyticsReporterConstants;
 import com.agoda.interview.analyticsreporter.helper.AnalyticsReporterLogs;
 import com.agoda.interview.analyticsreporter.helper.BookingDataConverterFactory;
 import com.agoda.interview.analyticsreporter.helper.FileFormat;
@@ -82,7 +83,8 @@ public class BookingServiceImpl implements BookingService {
 	@PostConstruct
 	private void importSeedData() {
 		try {
-			InputStream inStream = this.getClass().getClassLoader().getResourceAsStream("./BookingData.csv");
+			InputStream inStream = this.getClass().getClassLoader()
+					.getResourceAsStream(AnalyticsReporterConstants.BOOKING_DATA_FILE);
 			this.createBooking(FileFormat.CSV, inStream);
 			logger.info(AnalyticsReporterLogs.SEED_LOADING_SUCCESSFUL);
 		} catch (UnsupportedFormatException | IOException | InvalidDataException e) {

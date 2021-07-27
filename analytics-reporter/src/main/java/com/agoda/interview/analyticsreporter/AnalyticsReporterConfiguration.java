@@ -1,8 +1,10 @@
 package com.agoda.interview.analyticsreporter;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.google.gson.Gson;
 
@@ -14,8 +16,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
+@EnableAutoConfiguration
+@EnableJpaRepositories("com.agoda.interview.analyticsreporter.repository")
 @ComponentScan({ "com.agoda.interview.analyticsreporter.controller", "com.agoda.interview.analyticsreporter.helper",
-		"com.agoda.interview.analyticsreporter.service.impl", "com.agoda.interview.analyticsreporter.repository" })
+		"com.agoda.interview.analyticsreporter.service.impl" })
 public class AnalyticsReporterConfiguration {
 
 	/**

@@ -20,4 +20,6 @@ public class AnalyticsReporterConstants {
 	public static final String CURRENCY = "currency";
 	
 	public static final String USD_EXCHANGE_RATE = "to_usd_exchange_rate";
+	
+	public static final String BOOKING_DATA_FILE = "./BookingData.csv";
 }

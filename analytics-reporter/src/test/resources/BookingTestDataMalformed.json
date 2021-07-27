@@ -1,5 +1,4 @@
-{
-"bookings": [{
+[{
     "hotel_id": "1234",
     "booking_id": "1000000",
     "customer_id": "4e9a8620-7791-4125--7229ff441be0",
@@ -13,4 +12,4 @@
     "selling_price_local_currency": 597,
     "currency": "SGB",
     "to_usd_exchange_rate": 0.03
-}]}
+}]
