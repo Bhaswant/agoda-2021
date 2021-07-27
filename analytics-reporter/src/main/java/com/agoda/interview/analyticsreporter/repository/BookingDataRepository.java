@@ -14,7 +14,7 @@ import com.agoda.interview.analyticsreporter.model.BookingData;
  */
 public interface BookingDataRepository extends CrudRepository<BookingData, String> {
 	
-	public Optional<List<BookingData>> findAllByHotelId(String hotelId);
+	public Optional<List<BookingData>> findAllByHotelId(int hotelId);
 	
 	public Optional<List<BookingData>> findAllByCustomerId(String customerId);
 }

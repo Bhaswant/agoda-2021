@@ -33,8 +33,8 @@ public class BookingDataConverterJson implements IBookingDataConverter {
 			JsonArray inputArr = inputObj.get("bookings").getAsJsonArray();
 			for (int i = 0; i < inputArr.size(); i++) {
 				JsonObject bookingObj = inputArr.get(i).getAsJsonObject();
-				String hotelId = bookingObj.get(AnalyticsReporterConstants.HOTEL_ID_KEY).getAsString();
-				String bookingId = bookingObj.get(AnalyticsReporterConstants.BOOKING_ID_KEY).getAsString();
+				int hotelId = bookingObj.get(AnalyticsReporterConstants.HOTEL_ID_KEY).getAsInt();
+				int bookingId = bookingObj.get(AnalyticsReporterConstants.BOOKING_ID_KEY).getAsInt();
 				String customerId = bookingObj.get(AnalyticsReporterConstants.CUSTOMER_ID_KEY).getAsString();
 				double sellingPrice = bookingObj.get(AnalyticsReporterConstants.SELLING_PRICE).getAsDouble();
 				String currency = bookingObj.get(AnalyticsReporterConstants.CURRENCY).getAsString();

@@ -1,5 +1,7 @@
 package com.agoda.interview.analyticsreporter.service.test;
 
+import static org.junit.Assert.fail;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -15,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.agoda.interview.analyticsreporter.AnalyticsReporterConfiguration;
+import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
 import com.agoda.interview.analyticsreporter.helper.TestDataFile;
 import com.agoda.interview.analyticsreporter.model.HotelSummary;
 import com.agoda.interview.analyticsreporter.service.HotelService;
@@ -53,19 +56,34 @@ public class HotelServiceTest {
 
 	@Test
 	public void testHotelWithExchange() {
-		HotelSummary summary = hotelService.getHotelSummary("1000134", Optional.of(Double.valueOf(3)));
+		HotelSummary summary = null;
+		try {
+			summary = hotelService.getHotelSummary("1000134", Optional.of(Double.valueOf(3)));
+		} catch (InvalidDataException e) {
+			fail("Invalid data found");
+		}
 		Assert.assertEquals(gson.toJson(summary), withExchange.getTestDataAsString());
 	}
 
 	@Test
 	public void testHotelWithoutExchange() {
-		HotelSummary summary = hotelService.getHotelSummary("1000134", Optional.empty());
+		HotelSummary summary = null;
+		try {
+			summary = hotelService.getHotelSummary("1000134", Optional.empty());
+		} catch (InvalidDataException e) {
+			fail("Invalid data found");
+		}
 		Assert.assertEquals(gson.toJson(summary), withoutExchange.getTestDataAsString());
 	}
-	
+
 	@Test
 	public void testHotelWithEmpty() {
-		HotelSummary summary = hotelService.getHotelSummary("abc", Optional.empty());
+		HotelSummary summary = null;
+		try {
+			summary = hotelService.getHotelSummary("123", Optional.empty());
+		} catch (InvalidDataException e) {
+			fail("Invalid data found");
+		}
 		Assert.assertEquals(gson.toJson(summary), emptyData.getTestDataAsString());
 	}
 }

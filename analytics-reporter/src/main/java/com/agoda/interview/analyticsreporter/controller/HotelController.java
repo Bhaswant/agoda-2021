@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
 import com.agoda.interview.analyticsreporter.model.HotelSummary;
 import com.agoda.interview.analyticsreporter.service.HotelService;
 
@@ -28,7 +29,12 @@ public class HotelController {
 	
 	@GetMapping("/summary")
 	public ResponseEntity<HotelSummary> getSummary(@RequestParam String hotelId, @RequestParam(required = false) Double exchangeRate) {
-		HotelSummary summary = hotelService.getHotelSummary(hotelId, Optional.ofNullable(exchangeRate));
+		HotelSummary summary;
+		try {
+			summary = hotelService.getHotelSummary(hotelId, Optional.ofNullable(exchangeRate));
+		} catch (InvalidDataException e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 		return new ResponseEntity<>(summary, HttpStatus.OK);
 	}
 }

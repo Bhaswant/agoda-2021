@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS BOOKING_DATA;
 CREATE TABLE BOOKING_DATA (
-hotelId VARCHAR,
-bookingId VARCHAR,
+hotelId INTEGER,
+bookingId INTEGER,
 customerId VARCHAR,
 sellingPriceLocalCurrency DOUBLE,
 currency VARCHAR,

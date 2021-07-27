@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
 import com.agoda.interview.analyticsreporter.helper.AnalyticsReporterLogs;
 import com.agoda.interview.analyticsreporter.model.BookingData;
 import com.agoda.interview.analyticsreporter.model.HotelSummary;
@@ -29,9 +30,16 @@ public class HotelServiceImpl implements HotelService {
 	private Logger logger = LoggerFactory.getLogger(HotelServiceImpl.class);
 	
 	@Override
-	public HotelSummary getHotelSummary(final String hotelId, final Optional<Double> conversionRate) {
+	public HotelSummary getHotelSummary(final String hotelId, final Optional<Double> conversionRate) throws InvalidDataException {
 		long startTime = System.currentTimeMillis();
-		Optional<List<BookingData>> hotelBookings = repository.findAllByHotelId(hotelId);
+		int id = 0;
+		try {
+			id = Integer.valueOf(hotelId);
+		} catch(NumberFormatException e) {
+			logger.error(AnalyticsReporterLogs.INVALID_DATA, e);
+			throw new InvalidDataException(AnalyticsReporterLogs.INVALID_DATA);
+		}
+		Optional<List<BookingData>> hotelBookings = repository.findAllByHotelId(id);
 		logger.debug(AnalyticsReporterLogs.FETCH_LOG, (System.currentTimeMillis()-startTime));
 		List<BookingData> bookings = hotelBookings.orElse(new ArrayList<>());
 		int numberOfBookings = bookings.size();

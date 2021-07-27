@@ -2,6 +2,7 @@ package com.agoda.interview.analyticsreporter.service;
 
 import java.util.Optional;
 
+import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
 import com.agoda.interview.analyticsreporter.model.HotelSummary;
 
 /**
@@ -18,6 +19,7 @@ public interface HotelService {
 	 * @param hotelId
 	 * @param conversionRate
 	 * @return
+	 * @throws InvalidDataException 
 	 */
-	public HotelSummary getHotelSummary(final String hotelId, final Optional<Double> conversionRate);
+	public HotelSummary getHotelSummary(final String hotelId, final Optional<Double> conversionRate) throws InvalidDataException;
 }

@@ -21,11 +21,11 @@ public class BookingData {
 
 	@Getter
 	@Column
-	private String hotelId;
+	private int hotelId;
 	
 	@Getter
 	@Id
-	private String bookingId;
+	private int bookingId;
 	
 	@Getter
 	@Column
