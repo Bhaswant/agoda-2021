@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
+import com.agoda.interview.analyticsreporter.exception.InvalidInputDataException;
 import com.agoda.interview.analyticsreporter.exception.UnsupportedFormatException;
 import com.agoda.interview.analyticsreporter.helper.AnalyticsReporterConstants;
 import com.agoda.interview.analyticsreporter.helper.BookingDataConverterJson;
@@ -58,7 +58,7 @@ public class BookingDataConverterJsonTest {
 		StringBuilder actualOutput = new StringBuilder();
 		try {
 			actualOutput.append(converter.convert(validResource.getTestDataAsString()).get().toString());
-		} catch (UnsupportedFormatException | IOException | InvalidDataException e) {
+		} catch (UnsupportedFormatException | IOException | InvalidInputDataException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

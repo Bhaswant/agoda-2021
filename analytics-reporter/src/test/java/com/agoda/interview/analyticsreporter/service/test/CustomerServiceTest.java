@@ -18,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.agoda.interview.analyticsreporter.AnalyticsReporterConfiguration;
-import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
+import com.agoda.interview.analyticsreporter.exception.InvalidInputDataException;
 import com.agoda.interview.analyticsreporter.exception.ThreadExecutionException;
 import com.agoda.interview.analyticsreporter.helper.TestDataFile;
 import com.agoda.interview.analyticsreporter.model.CustomerSummary;
@@ -78,7 +78,7 @@ public class CustomerServiceTest {
 	public void testGetSummaryInvalidFormatCase() {
 		try {
 			customerService.getCustomerSummary(invalidFormatCase.getTestDataAsString());
-		} catch (InvalidDataException e) {
+		} catch (InvalidInputDataException e) {
 			return;
 		} catch (ThreadExecutionException e) {
 			fail(String.format("Test failed: {0}", e.getLocalizedMessage()));
@@ -90,7 +90,7 @@ public class CustomerServiceTest {
 		List<CustomerSummary> customerSummary = Collections.emptyList();
 		try {
 			customerSummary = customerService.getCustomerSummary(testCase.getTestDataAsString());
-		} catch (ThreadExecutionException | InvalidDataException e) {
+		} catch (ThreadExecutionException | InvalidInputDataException e) {
 			fail(String.format("Test failed: {0}", e.getLocalizedMessage()));
 		}
 		Assert.assertEquals(resultCount, customerSummary.size());

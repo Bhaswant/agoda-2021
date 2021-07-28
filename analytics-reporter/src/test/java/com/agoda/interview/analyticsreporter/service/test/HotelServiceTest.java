@@ -17,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.agoda.interview.analyticsreporter.AnalyticsReporterConfiguration;
-import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
+import com.agoda.interview.analyticsreporter.exception.InvalidInputDataException;
 import com.agoda.interview.analyticsreporter.helper.TestDataFile;
 import com.agoda.interview.analyticsreporter.model.HotelSummary;
 import com.agoda.interview.analyticsreporter.service.HotelService;
@@ -59,7 +59,7 @@ public class HotelServiceTest {
 		HotelSummary summary = null;
 		try {
 			summary = hotelService.getHotelSummary("1000134", Optional.of(Double.valueOf(3)));
-		} catch (InvalidDataException e) {
+		} catch (InvalidInputDataException e) {
 			fail("Invalid data found");
 		}
 		Assert.assertEquals(gson.toJson(summary), withExchange.getTestDataAsString());
@@ -70,7 +70,7 @@ public class HotelServiceTest {
 		HotelSummary summary = null;
 		try {
 			summary = hotelService.getHotelSummary("1000134", Optional.empty());
-		} catch (InvalidDataException e) {
+		} catch (InvalidInputDataException e) {
 			fail("Invalid data found");
 		}
 		Assert.assertEquals(gson.toJson(summary), withoutExchange.getTestDataAsString());
@@ -81,7 +81,7 @@ public class HotelServiceTest {
 		HotelSummary summary = null;
 		try {
 			summary = hotelService.getHotelSummary("123", Optional.empty());
-		} catch (InvalidDataException e) {
+		} catch (InvalidInputDataException e) {
 			fail("Invalid data found");
 		}
 		Assert.assertEquals(gson.toJson(summary), emptyData.getTestDataAsString());
@@ -92,7 +92,7 @@ public class HotelServiceTest {
 		HotelSummary summary = null;
 		try {
 			summary = hotelService.getHotelSummary("abc", Optional.empty());
-		} catch (InvalidDataException e) {
+		} catch (InvalidInputDataException e) {
 			return;
 		}
 		fail("Expected invalid hotel Id");

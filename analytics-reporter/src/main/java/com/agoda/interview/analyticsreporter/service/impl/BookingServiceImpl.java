@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
+import com.agoda.interview.analyticsreporter.exception.InvalidInputDataException;
 import com.agoda.interview.analyticsreporter.exception.UnsupportedFormatException;
 import com.agoda.interview.analyticsreporter.helper.AnalyticsReporterConstants;
 import com.agoda.interview.analyticsreporter.helper.AnalyticsReporterLogs;
@@ -44,7 +44,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public void createBooking(final FileFormat format, final String bookingData)
-			throws UnsupportedFormatException, IOException, InvalidDataException {
+			throws UnsupportedFormatException, IOException, InvalidInputDataException {
 		long startTime = System.currentTimeMillis();
 		logger.debug("Received a create booking request");
 		IBookingDataConverter converter = factory.getConverter(format);
@@ -54,7 +54,6 @@ public class BookingServiceImpl implements BookingService {
 		if (!bulkInput.isPresent()) {
 			logger.warn(AnalyticsReporterLogs.EMPTY_RECORDS);
 		} else {
-			// Batch update TODO: Check for multi-threading
 			repository.saveAll(bulkInput.get());
 		}
 		logger.debug(AnalyticsReporterLogs.INSERTION_LOG, (System.currentTimeMillis() - startTime));
@@ -62,7 +61,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public void createBooking(final String format, final String bookingData)
-			throws UnsupportedFormatException, IOException, InvalidDataException {
+			throws UnsupportedFormatException, IOException, InvalidInputDataException {
 		FileFormat fileFormat = null;
 		try {
 			fileFormat = FileFormat.valueOf(format.toUpperCase());
@@ -75,7 +74,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public void createBooking(final FileFormat format, final InputStream inStream)
-			throws IOException, UnsupportedFormatException, InvalidDataException {
+			throws IOException, UnsupportedFormatException, InvalidInputDataException {
 		String bookingData = IOUtils.toString(inStream, StandardCharsets.UTF_8);
 		createBooking(format, bookingData);
 	}
@@ -87,7 +86,7 @@ public class BookingServiceImpl implements BookingService {
 					.getResourceAsStream(AnalyticsReporterConstants.BOOKING_DATA_FILE);
 			this.createBooking(FileFormat.CSV, inStream);
 			logger.info(AnalyticsReporterLogs.SEED_LOADING_SUCCESSFUL);
-		} catch (UnsupportedFormatException | IOException | InvalidDataException e) {
+		} catch (UnsupportedFormatException | IOException | InvalidInputDataException e) {
 			logger.error(AnalyticsReporterLogs.ERROR_IN_FILE_LOADING, e.getLocalizedMessage());
 		}
 	}

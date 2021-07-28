@@ -3,8 +3,8 @@ package com.agoda.interview.analyticsreporter.model;
 import lombok.Data;
 
 /**
- * 
- * @author i0b00j8
+ * Hotel Summary output Pojo.
+ * @author Bhaswant
  *
  */
 @Data

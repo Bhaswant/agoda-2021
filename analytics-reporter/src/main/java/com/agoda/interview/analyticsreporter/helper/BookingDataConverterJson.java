@@ -8,13 +8,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
+import com.agoda.interview.analyticsreporter.exception.InvalidInputDataException;
 import com.agoda.interview.analyticsreporter.model.BookingData;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
+/**
+ * Implementation of {@link IBookingDataConverter} for Json implementations
+ * 
+ * @author Bhaswant
+ *
+ */
 @Component
 public class BookingDataConverterJson implements IBookingDataConverter {
 
@@ -23,7 +29,7 @@ public class BookingDataConverterJson implements IBookingDataConverter {
 	private Logger logger = LoggerFactory.getLogger(BookingDataConverterJson.class);
 
 	@Override
-	public Optional<List<BookingData>> convert(final String input) throws InvalidDataException {
+	public Optional<List<BookingData>> convert(final String input) throws InvalidInputDataException {
 		List<BookingData> bookingData = null;
 		try {
 			bookingData = new ArrayList<>();
@@ -41,7 +47,7 @@ public class BookingDataConverterJson implements IBookingDataConverter {
 			}
 		} catch (JsonSyntaxException e) {
 			logger.error(AnalyticsReporterLogs.INVALID_DATA, e);
-			throw new InvalidDataException(AnalyticsReporterLogs.INVALID_DATA);
+			throw new InvalidInputDataException(AnalyticsReporterLogs.INVALID_DATA);
 		}
 		return Optional.ofNullable(bookingData);
 	}

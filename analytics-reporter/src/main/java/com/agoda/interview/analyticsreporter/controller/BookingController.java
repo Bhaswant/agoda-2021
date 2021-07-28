@@ -11,11 +11,19 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
+import com.agoda.interview.analyticsreporter.exception.InvalidInputDataException;
 import com.agoda.interview.analyticsreporter.exception.UnsupportedFormatException;
 import com.agoda.interview.analyticsreporter.helper.AnalyticsReporterLogs;
 import com.agoda.interview.analyticsreporter.service.BookingService;
 
+/**
+ * 
+ * Rest controller for Booking related APIs. Currently supporting:
+ * 1. Create booking with a specific format
+ * 
+ * @author Bhaswant
+ *
+ */
 @RestController
 @RequestMapping(value = "/v1/booking")
 public class BookingController {
@@ -25,10 +33,9 @@ public class BookingController {
 
 	@PostMapping
 	public ResponseEntity<String> booking(@RequestHeader("format") String format, @RequestBody String bookingData) {
-
 		try {
 			bookingService.createBooking(format, bookingData);
-		} catch (UnsupportedFormatException | InvalidDataException e) {
+		} catch (UnsupportedFormatException | InvalidInputDataException e) {
 			return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
 		} catch (IOException e) {
 			return new ResponseEntity<>(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

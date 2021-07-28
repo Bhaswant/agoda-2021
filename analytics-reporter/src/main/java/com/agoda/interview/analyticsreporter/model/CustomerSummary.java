@@ -2,6 +2,11 @@ package com.agoda.interview.analyticsreporter.model;
 
 import lombok.Data;
 
+/**
+ * Customer Summary output pojo
+ * @author i0b00j8
+ *
+ */
 @Data
 public class CustomerSummary {
 	
@@ -11,7 +16,4 @@ public class CustomerSummary {
 	
 	private final double totalPriceUsd;
 	
-	public static CustomerSummary emptyObject(final String customerId) {
-		return new CustomerSummary(customerId, 0, 0);
-	}
 }

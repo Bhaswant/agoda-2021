@@ -3,6 +3,11 @@ package com.agoda.interview.analyticsreporter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * Spring boot starter class
+ * @author Bhaswant
+ *
+ */
 @SpringBootApplication
 public class AnalyticsReporterApplication {
 

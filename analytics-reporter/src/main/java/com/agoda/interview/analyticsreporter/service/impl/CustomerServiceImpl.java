@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
+import com.agoda.interview.analyticsreporter.exception.InvalidInputDataException;
 import com.agoda.interview.analyticsreporter.exception.ThreadExecutionException;
 import com.agoda.interview.analyticsreporter.helper.AnalyticsReporterLogs;
 import com.agoda.interview.analyticsreporter.helper.CustomerServiceHelper;
@@ -45,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<CustomerSummary> getCustomerSummary(final String payload)
-			throws ThreadExecutionException, InvalidDataException {
+			throws ThreadExecutionException, InvalidInputDataException {
 		List<String> customerIds = getCustomerIds(payload);
 		return getCustomerSummary(customerIds);
 	}
@@ -56,6 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
 		List<CustomerSummary> customerSummaryOutput = new ArrayList<>();
 		List<Future<CustomerSummary>> customerFutures = new ArrayList<>();
 		for (String customerId : customerIds) {
+			logger.info(AnalyticsReporterLogs.FETCHING_SUMMARY_FOR, customerId);
 			customerFutures.add(executorService.submit(new CustomerServiceHelper(repository, customerId)));
 		}
 		for (Future<CustomerSummary> future : customerFutures) {
@@ -75,16 +76,16 @@ public class CustomerServiceImpl implements CustomerService {
 	 * 
 	 * @param payload
 	 * @return
-	 * @throws InvalidDataException
+	 * @throws InvalidInputDataException
 	 */
-	private List<String> getCustomerIds(final String payload) throws InvalidDataException {
+	private List<String> getCustomerIds(final String payload) throws InvalidInputDataException {
 		List<String> customerIds = new ArrayList<>();
 		try {
 			JsonArray customerIdsJson = gson.fromJson(payload, JsonObject.class).get("customer_ids").getAsJsonArray();
 			customerIdsJson.iterator().forEachRemaining(customerId -> customerIds.add(customerId.getAsString()));
 		} catch (JsonSyntaxException e) {
 			logger.error(AnalyticsReporterLogs.INVALID_DATA, e);
-			throw new InvalidDataException(AnalyticsReporterLogs.INVALID_DATA);
+			throw new InvalidInputDataException(AnalyticsReporterLogs.INVALID_DATA);
 		}
 		return customerIds;
 	}

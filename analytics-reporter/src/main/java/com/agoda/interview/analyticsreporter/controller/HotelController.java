@@ -10,14 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
+import com.agoda.interview.analyticsreporter.exception.InvalidInputDataException;
 import com.agoda.interview.analyticsreporter.model.HotelSummary;
 import com.agoda.interview.analyticsreporter.service.HotelService;
 
 /**
- * All the APIs related to the hotels
  * 
- * @author i0b00j8
+ * Rest controller for Hotel related APIs. Currently supporting:
+ * 1. Get hotel summary for a given customer.
+ * 
+ * @author Bhaswant
  *
  */
 @RestController
@@ -26,13 +28,14 @@ public class HotelController {
 
 	@Autowired
 	private HotelService hotelService;
-	
+
 	@GetMapping("/summary")
-	public ResponseEntity<HotelSummary> getSummary(@RequestParam String hotelId, @RequestParam(required = false) Double exchangeRate) {
+	public ResponseEntity<HotelSummary> getSummary(@RequestParam String hotelId,
+			@RequestParam(required = false) Double exchangeRate) {
 		HotelSummary summary;
 		try {
 			summary = hotelService.getHotelSummary(hotelId, Optional.ofNullable(exchangeRate));
-		} catch (InvalidDataException e) {
+		} catch (InvalidInputDataException e) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(summary, HttpStatus.OK);

@@ -21,7 +21,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
+import com.agoda.interview.analyticsreporter.exception.InvalidInputDataException;
 import com.agoda.interview.analyticsreporter.exception.UnsupportedFormatException;
 import com.agoda.interview.analyticsreporter.helper.AnalyticsReporterConstants;
 import com.agoda.interview.analyticsreporter.helper.BookingDataConverterFactory;
@@ -85,7 +85,7 @@ public class BookingServiceTest {
 			bookingService.createBooking(FileFormat.JSON.toString(), validResource.getTestDataAsString());
 			verify(converter, times(2)).convert(Mockito.anyString());
 			verify(repository, times(2)).saveAll(Mockito.any());
-		} catch (UnsupportedFormatException | IOException | InvalidDataException e) {
+		} catch (UnsupportedFormatException | IOException | InvalidInputDataException e) {
 			fail(String.format("Test failed: {0}", e.getLocalizedMessage()));
 		}
 	}
@@ -100,7 +100,7 @@ public class BookingServiceTest {
 			bookingService.createBooking("xml", validResource.getTestDataAsString());
 		} catch (UnsupportedFormatException e) {
 			return;
-		} catch(InvalidDataException  | IOException e) {
+		} catch(InvalidInputDataException  | IOException e) {
 			fail(String.format("Test failed: {0}", e.getLocalizedMessage()));
 		}
 		fail("Expected invalid data exception");
@@ -113,7 +113,7 @@ public class BookingServiceTest {
 			bookingService.createBooking(FileFormat.JSON, validResource.getTestDataAsStream());
 			verify(converter).convert(Mockito.anyString());
 			verify(repository).saveAll(Mockito.any());
-		} catch (UnsupportedFormatException | IOException | InvalidDataException e) {
+		} catch (UnsupportedFormatException | IOException | InvalidInputDataException e) {
 			fail(String.format("Test failed: {0}", e.getLocalizedMessage()));
 		}
 	}
@@ -126,7 +126,7 @@ public class BookingServiceTest {
 			bookingService.createBooking(FileFormat.JSON, validResource.getTestDataAsStream());
 			verify(converter).convert(Mockito.anyString());
 			verify(repository, never()).saveAll(Mockito.any());
-		} catch (UnsupportedFormatException | IOException | InvalidDataException e) {
+		} catch (UnsupportedFormatException | IOException | InvalidInputDataException e) {
 			fail(String.format("Test failed: {0}", e.getLocalizedMessage()));
 		}
 	}
@@ -135,7 +135,7 @@ public class BookingServiceTest {
 		try {
 			when(factory.getConverter(Mockito.any())).thenReturn(converter);
 			when(converter.convert(Mockito.anyString())).thenReturn(getValidBookingData(validResource.getTestDataAsString()));
-		} catch (UnsupportedFormatException | IOException | InvalidDataException e) {
+		} catch (UnsupportedFormatException | IOException | InvalidInputDataException e) {
 			fail("Data preparation failed");
 		}
 	}

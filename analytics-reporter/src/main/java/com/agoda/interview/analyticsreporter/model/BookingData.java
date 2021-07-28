@@ -9,16 +9,18 @@ import com.google.gson.Gson;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * Booking Data Model. Each object indicates each row in BookingData table
- * @author i0b00j8
+ * @author Bhaswant
  *
  */
 @Entity
 @Table
 @AllArgsConstructor
+@NoArgsConstructor
 public class BookingData {
 
 	@Getter
@@ -46,9 +48,6 @@ public class BookingData {
 	@Setter
 	@Column
 	private double toUsdExchangeEate;
-	
-	public BookingData() {		
-	}
 	
 	@Override
 	public String toString() {
