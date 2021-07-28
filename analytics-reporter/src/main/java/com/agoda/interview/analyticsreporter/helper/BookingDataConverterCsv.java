@@ -41,8 +41,8 @@ public class BookingDataConverterCsv implements IBookingDataConverter {
 			bookingData = new ArrayList<>();
 			for (CSVRecord record : parse.getRecords()) {
 				try {
-					int hotelId = Integer.valueOf(cleanString(record.get(addEnclosure(AnalyticsReporterConstants.HOTEL_ID_KEY))));
-					int bookingId = Integer.valueOf(cleanString(record.get(addEnclosure(AnalyticsReporterConstants.BOOKING_ID_KEY))));
+					int hotelId = Integer.parseInt(cleanString(record.get(addEnclosure(AnalyticsReporterConstants.HOTEL_ID_KEY))));
+					int bookingId = Integer.parseInt(cleanString(record.get(addEnclosure(AnalyticsReporterConstants.BOOKING_ID_KEY))));
 					String customerId = cleanString(record.get(addEnclosure(AnalyticsReporterConstants.CUSTOMER_ID_KEY)));
 					double sellingPrice = cleanDouble(
 							record.get(addEnclosure(AnalyticsReporterConstants.SELLING_PRICE)));

@@ -45,6 +45,9 @@ public class CustomerServiceTest {
 	@Rule
 	public TestDataFile negativeCaseResults;
 
+	@Rule
+	public TestDataFile invalidFormatCase;
+
 	private static final Gson gson = new Gson();
 
 	private Logger logger = LoggerFactory.getLogger(TestDataFile.class);
@@ -55,6 +58,7 @@ public class CustomerServiceTest {
 			positiveCaseResults = new TestDataFile("CustomerSummaryResult1.json");
 			negativeCases = new TestDataFile("./CustomerTestData2.json");
 			negativeCaseResults = new TestDataFile("CustomerSummaryResult2.json");
+			invalidFormatCase = new TestDataFile("CustomerSummaryResult3.json");
 		} catch (IOException e) {
 			logger.error("Exception occurred in reading test data, tests will fail", e);
 		}
@@ -69,7 +73,19 @@ public class CustomerServiceTest {
 	public void testGetSummaryNegativeCase() {
 		testGetSummary(negativeCases, negativeCaseResults, 3);
 	}
-	
+
+	@Test
+	public void testGetSummaryInvalidFormatCase() {
+		try {
+			customerService.getCustomerSummary(invalidFormatCase.getTestDataAsString());
+		} catch (InvalidDataException e) {
+			return;
+		} catch (ThreadExecutionException e) {
+			fail(String.format("Test failed: {0}", e.getLocalizedMessage()));
+		}
+		fail("Expected Invalid Data exception");
+	}
+
 	public void testGetSummary(final TestDataFile testCase, final TestDataFile results, final int resultCount) {
 		List<CustomerSummary> customerSummary = Collections.emptyList();
 		try {

@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.Gson;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,5 +48,10 @@ public class BookingData {
 	private double toUsdExchangeEate;
 	
 	public BookingData() {		
+	}
+	
+	@Override
+	public String toString() {
+		return new Gson().toJson(this);
 	}
 }

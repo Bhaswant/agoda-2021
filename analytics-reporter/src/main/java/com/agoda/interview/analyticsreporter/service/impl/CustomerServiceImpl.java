@@ -33,8 +33,7 @@ import com.google.gson.JsonSyntaxException;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-	@Autowired
-	private Gson gson;
+	private static final Gson gson = new Gson();
 
 	@Autowired
 	private BookingDataRepository repository;

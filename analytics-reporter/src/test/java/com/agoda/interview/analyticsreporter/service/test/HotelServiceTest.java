@@ -86,4 +86,15 @@ public class HotelServiceTest {
 		}
 		Assert.assertEquals(gson.toJson(summary), emptyData.getTestDataAsString());
 	}
+
+	@Test
+	public void testHotelInvalidId() {
+		HotelSummary summary = null;
+		try {
+			summary = hotelService.getHotelSummary("abc", Optional.empty());
+		} catch (InvalidDataException e) {
+			return;
+		}
+		fail("Expected invalid hotel Id");
+	}
 }

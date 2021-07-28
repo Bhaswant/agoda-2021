@@ -4,6 +4,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -81,13 +82,30 @@ public class BookingServiceTest {
 		mockConverter();
 		try {
 			bookingService.createBooking(FileFormat.JSON, validResource.getTestDataAsString());
-			verify(converter).convert(Mockito.anyString());
-			verify(repository).saveAll(Mockito.any());
+			bookingService.createBooking(FileFormat.JSON.toString(), validResource.getTestDataAsString());
+			verify(converter, times(2)).convert(Mockito.anyString());
+			verify(repository, times(2)).saveAll(Mockito.any());
 		} catch (UnsupportedFormatException | IOException | InvalidDataException e) {
 			fail(String.format("Test failed: {0}", e.getLocalizedMessage()));
 		}
 	}
-	
+
+	/**
+	 * Testing invalid format
+	 */
+	@Test
+	public void testCreateInvalidBookingFormat() {
+		mockConverter();
+		try {
+			bookingService.createBooking("xml", validResource.getTestDataAsString());
+		} catch (UnsupportedFormatException e) {
+			return;
+		} catch(InvalidDataException  | IOException e) {
+			fail(String.format("Test failed: {0}", e.getLocalizedMessage()));
+		}
+		fail("Expected invalid data exception");
+	}
+
 	@Test
 	public void testCreateBookingStream() {
 		mockConverter();
@@ -112,6 +130,7 @@ public class BookingServiceTest {
 			fail(String.format("Test failed: {0}", e.getLocalizedMessage()));
 		}
 	}
+	
 	private void mockConverter() {
 		try {
 			when(factory.getConverter(Mockito.any())).thenReturn(converter);
