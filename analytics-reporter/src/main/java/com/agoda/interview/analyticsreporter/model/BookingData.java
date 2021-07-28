@@ -5,27 +5,31 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.google.gson.Gson;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * Booking Data Model. Each object indicates each row in BookingData table
- * @author i0b00j8
+ * @author Bhaswant
  *
  */
 @Entity
 @Table
 @AllArgsConstructor
+@NoArgsConstructor
 public class BookingData {
 
 	@Getter
 	@Column
-	private String hotelId;
+	private int hotelId;
 	
 	@Getter
 	@Id
-	private String bookingId;
+	private int bookingId;
 	
 	@Getter
 	@Column
@@ -45,6 +49,8 @@ public class BookingData {
 	@Column
 	private double toUsdExchangeEate;
 	
-	public BookingData() {		
+	@Override
+	public String toString() {
+		return new Gson().toJson(this);
 	}
 }

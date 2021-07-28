@@ -12,28 +12,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import com.agoda.interview.analyticsreporter.exception.InvalidDataException;
+import com.agoda.interview.analyticsreporter.exception.InvalidInputDataException;
 import com.agoda.interview.analyticsreporter.model.BookingData;
 
 /**
+ * Implementation of {@link IBookingDataConverter} for CSV implementations
  * 
- * @author i0b00j8
+ * @author Bhaswant
  *
  */
 @Component
 public class BookingDataConverterCsv implements IBookingDataConverter {
 
-	Logger logger = LoggerFactory.getLogger(BookingDataConverterCsv.class);
+	private Logger logger = LoggerFactory.getLogger(BookingDataConverterCsv.class);
 
 	/**
 	 * Expecting first line as headers. As part of pro-active validation, Ignoring
 	 * complete data even if one column value is incorrect.
 	 * 
 	 * @throws IOException
-	 * @throws InvalidDataException
+	 * @throws InvalidInputDataException
 	 */
 	@Override
-	public Optional<List<BookingData>> convert(final String input) throws IOException, InvalidDataException {
+	public Optional<List<BookingData>> convert(final String input) throws IOException, InvalidInputDataException {
 		List<BookingData> bookingData = null;
 
 		CSVFormat format = CSVFormat.newFormat(',').withHeader();
@@ -41,9 +42,12 @@ public class BookingDataConverterCsv implements IBookingDataConverter {
 			bookingData = new ArrayList<>();
 			for (CSVRecord record : parse.getRecords()) {
 				try {
-					String hotelId = cleanString(record.get(addEnclosure(AnalyticsReporterConstants.HOTEL_ID_KEY)));
-					String bookingId = cleanString(record.get(addEnclosure(AnalyticsReporterConstants.BOOKING_ID_KEY)));
-					String customerId = cleanString(record.get(addEnclosure(AnalyticsReporterConstants.CUSTOMER_ID_KEY)));
+					int hotelId = Integer
+							.parseInt(cleanString(record.get(addEnclosure(AnalyticsReporterConstants.HOTEL_ID_KEY))));
+					int bookingId = Integer
+							.parseInt(cleanString(record.get(addEnclosure(AnalyticsReporterConstants.BOOKING_ID_KEY))));
+					String customerId = cleanString(
+							record.get(addEnclosure(AnalyticsReporterConstants.CUSTOMER_ID_KEY)));
 					double sellingPrice = cleanDouble(
 							record.get(addEnclosure(AnalyticsReporterConstants.SELLING_PRICE)));
 					String currency = cleanString(record.get(addEnclosure(AnalyticsReporterConstants.CURRENCY)));
@@ -53,7 +57,7 @@ public class BookingDataConverterCsv implements IBookingDataConverter {
 							.add(new BookingData(hotelId, bookingId, customerId, sellingPrice, currency, exchangeRate));
 				} catch (NumberFormatException e) {
 					logger.error(AnalyticsReporterLogs.INVALID_DATA, e);
-					throw new InvalidDataException(AnalyticsReporterLogs.INVALID_DATA);
+					throw new InvalidInputDataException(AnalyticsReporterLogs.INVALID_DATA);
 				}
 			}
 		}
@@ -71,9 +75,9 @@ public class BookingDataConverterCsv implements IBookingDataConverter {
 		doubleVal = stripEnclosure(doubleVal);
 		return Double.valueOf(doubleVal);
 	}
-	
+
 	/**
-	 * TODO: Add a separate class for each data type
+	 * 
 	 * @param doubleVal
 	 * @return
 	 */
@@ -82,6 +86,12 @@ public class BookingDataConverterCsv implements IBookingDataConverter {
 		return String.valueOf(doubleVal);
 	}
 
+	/**
+	 * Removes the double quotes, if there are any
+	 * 
+	 * @param val
+	 * @return
+	 */
 	private String stripEnclosure(String val) {
 		if (val.startsWith(AnalyticsReporterConstants.CSV_ATTRIBUTE_ENCLOSED_CHAR)) {
 			val = val.substring(1);
@@ -91,9 +101,15 @@ public class BookingDataConverterCsv implements IBookingDataConverter {
 		}
 		return val;
 	}
-	
+
+	/**
+	 * Adds double quotes when required.
+	 * 
+	 * @param key
+	 * @return
+	 */
 	private String addEnclosure(String key) {
-		StringBuffer keyBuffer = new StringBuffer();
+		StringBuilder keyBuffer = new StringBuilder();
 		keyBuffer.append(AnalyticsReporterConstants.CSV_ATTRIBUTE_ENCLOSED_CHAR).append(key)
 				.append(AnalyticsReporterConstants.CSV_ATTRIBUTE_ENCLOSED_CHAR);
 		return keyBuffer.toString();
